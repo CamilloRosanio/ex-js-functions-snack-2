@@ -17,9 +17,10 @@ const sommaArrow = (num1, num2) => {
     return num1 + num2;
 };
 
-console.log(somma(1, 1));
-console.log(sommaAnonima(2, 2));
-console.log(sommaArrow(3, 3));
+// INVOCA
+// console.log(somma(1, 1));
+// console.log(sommaAnonima(2, 2));
+// console.log(sommaArrow(3, 3));
 
 
 
@@ -30,7 +31,8 @@ console.log(sommaArrow(3, 3));
 // ARROW QUADRATO NUMERO
 const quadrato = (num) => num * num;
 
-console.log(quadrato(3));
+// INVOCA
+// console.log(quadrato(3));
 
 
 
@@ -46,8 +48,9 @@ const eseguiOperazione = (num1, num2, callback) => {
     return callback(num1, num2);
 }
 
-console.log(eseguiOperazione(1, 1, sommaCallback));
-console.log(eseguiOperazione(2, 2, moltiplicaCallback));
+// INVOCA
+// console.log(eseguiOperazione(1, 1, sommaCallback));
+// console.log(eseguiOperazione(2, 2, moltiplicaCallback));
 
 
 
@@ -65,7 +68,8 @@ function creaTimer(ms) {
 
 const timer1 = creaTimer(1000);
 
-timer1();
+// INVOCA
+// timer1();
 
 
 
@@ -83,12 +87,12 @@ function stampaOgniSecondo(ms) {
 
 const stampaMessaggio = stampaOgniSecondo(1000);
 
-const intervalMessaggio = stampaMessaggio('Messaggio!');
-
-setTimeout(() => {
-    clearInterval(intervalMessaggio);
-    console.log("Stop intervalMessaggio");
-}, 5000);
+// INVOCA
+// const intervalMessaggio = stampaMessaggio('Messaggio!');
+// setTimeout(() => {
+//     clearInterval(intervalMessaggio);
+//     console.log("Stop intervalMessaggio");
+// }, 5000);
 
 
 
@@ -109,9 +113,36 @@ const contatoreAutomatico = creaContatoreAutomatico(1000);
 
 let contatoreIncrementale = 0;
 
-const intervalContatoreAutomatico = contatoreAutomatico(contatoreIncrementale);
+// INVOCA
+// const intervalContatoreAutomatico = contatoreAutomatico(contatoreIncrementale);
+// setTimeout(() => {
+//     clearInterval(intervalContatoreAutomatico);
+//     console.log("Stop contatoreAutomatico");
+// }, 5000);
 
-setTimeout(() => {
-    clearInterval(intervalContatoreAutomatico);
-    console.log("Stop contatoreAutomatico");
-}, 5000);
+
+
+/***********************************************************************
+# SNACK 7
+***********************************************************************/
+
+function eseguiFerma(messaggio, ms, stop) {
+    return function () {
+        const interval = setInterval(() => {
+            console.log(messaggio)
+        }, ms);
+
+        setTimeout(() => {
+            clearInterval(interval);
+            console.log("eseguiFerma");
+        }, stop);
+    };
+}
+
+const usaFerma = eseguiFerma('Messaggio da fermare', 1000, 5000);
+
+// INVOCA
+// usaFerma();
+
+
+
