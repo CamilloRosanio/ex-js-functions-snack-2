@@ -199,8 +199,8 @@ function sequenzaOperazioniV2(array, ms) {
 }
 
 // INVOCA
-sequenzaOperazioniV1(operazioni, 1000);
-sequenzaOperazioniV2(operazioni, 1000);
+// sequenzaOperazioniV1(operazioni, 1000);
+// sequenzaOperazioniV2(operazioni, 1000);
 
 
 
@@ -208,3 +208,32 @@ sequenzaOperazioniV2(operazioni, 1000);
 # SNACK 10 (BONUS)
 ***********************************************************************/
 
+function stampaMessaggioThrottler(messaggio) {
+    console.log(messaggio);
+}
+
+function creaThrottler(funzione, limite) {
+    let ultimaChiamata = 0;
+    let chiamate = 0;
+
+    return function (...args) {
+        const adesso = new Date().getTime();
+        if (adesso - ultimaChiamata >= limite) {
+            funzione(...args);
+            ultimaChiamata = adesso;
+            chiamate++;
+            console.log('Funzione eseguita');
+        } else {
+            console.log('Call ignorata');
+        }
+        console.log(`**********CALL ESEGUITE: ${chiamate}`);
+    };
+}
+
+const throttledStampa = creaThrottler(stampaMessaggioThrottler, 2000);
+
+// INVOCA
+throttledStampa('Call 1');
+throttledStampa('Call 2');
+setTimeout(() => throttledStampa('Call 3'), 2500);
+setTimeout(() => throttledStampa('Call 4'), 3500);
