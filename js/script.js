@@ -161,7 +161,50 @@ function contoAllaRovescia(num) {
     }, 1000);
 }
 
-const conteggio = contoAllaRovescia(5);
+// INVOCA
+// const conteggio = contoAllaRovescia(5);
+
+
+
+/***********************************************************************
+# SNACK 9 (BONUS)
+***********************************************************************/
+
+const op1 = () => console.log('Operazione 1');
+const op2 = () => console.log('Operazione 2');
+const op3 = () => console.log('Operazione 3');
+
+const operazioni = [op1, op2, op3];
+
+// VERSIONE CON CICLO FOR
+function sequenzaOperazioniV1(array, ms) {
+    for (let i = 0; i < array.length; i++) {
+        setTimeout(() => {
+            array[i]();
+        }, ms * i);
+    }
+}
+
+// VERSIONE CON IF
+function sequenzaOperazioniV2(array, ms) {
+    let i = 0;
+    function eseguiOperazione() {
+        if (i < array.length) {
+            array[i]();
+            i++;
+            setTimeout(eseguiOperazione, ms);
+        }
+    }
+    eseguiOperazione();
+}
 
 // INVOCA
-// conteggio();
+sequenzaOperazioniV1(operazioni, 1000);
+sequenzaOperazioniV2(operazioni, 1000);
+
+
+
+/***********************************************************************
+# SNACK 10 (BONUS)
+***********************************************************************/
+
