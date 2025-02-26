@@ -64,10 +64,8 @@ function creaTimer(ms) {
 };
 
 const timer1 = creaTimer(1000);
-const timer2 = creaTimer(2000);
 
 timer1();
-timer2();
 
 
 
@@ -85,9 +83,35 @@ function stampaOgniSecondo(ms) {
 
 const stampaMessaggio = stampaOgniSecondo(1000);
 
-const interval = stampaMessaggio('Ciao!');
+const intervalMessaggio = stampaMessaggio('Messaggio!');
 
 setTimeout(() => {
-    clearInterval(interval);
-    console.log("Stop Interval");
-}, 6000);
+    clearInterval(intervalMessaggio);
+    console.log("Stop intervalMessaggio");
+}, 5000);
+
+
+
+/***********************************************************************
+# SNACK 6
+***********************************************************************/
+
+function creaContatoreAutomatico(ms) {
+    return function (counter) {
+        return setInterval(() => {
+            counter++;
+            console.log(counter);
+        }, ms)
+    }
+}
+
+const contatoreAutomatico = creaContatoreAutomatico(1000);
+
+let contatoreIncrementale = 0;
+
+const intervalContatoreAutomatico = contatoreAutomatico(contatoreIncrementale);
+
+setTimeout(() => {
+    clearInterval(intervalContatoreAutomatico);
+    console.log("Stop contatoreAutomatico");
+}, 5000);
