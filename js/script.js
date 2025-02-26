@@ -146,3 +146,22 @@ const usaFerma = eseguiFerma('Messaggio da fermare', 1000, 5000);
 
 
 
+/***********************************************************************
+# SNACK 8 (BONUS)
+***********************************************************************/
+
+function contoAllaRovescia(num) {
+    let timer = setInterval(() => {
+        console.log(num);
+        if (num === 0) {
+            console.log("Tempo scaduto!");
+            clearInterval(timer);
+        }
+        num--;
+    }, 1000);
+}
+
+const conteggio = contoAllaRovescia(5);
+
+// INVOCA
+conteggio();
