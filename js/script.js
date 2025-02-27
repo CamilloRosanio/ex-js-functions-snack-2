@@ -31,6 +31,9 @@ const sommaArrow = (num1, num2) => {
 // ARROW QUADRATO NUMERO
 const quadrato = (num) => num * num;
 
+// Alternativa con operatore **, che indica la moltiplicazione per sè stesso.
+const quadrato2 = num => num ** 2;
+
 // INVOCA
 // console.log(quadrato(3));
 
@@ -77,12 +80,21 @@ const timer1 = creaTimer(1000);
 # SNACK 5
 ***********************************************************************/
 
+// MIA VERSIONE
+// function stampaOgniSecondo(ms) {
+//     return function (messaggio) {
+//         return setInterval(() => {
+//             console.log(messaggio);
+//         }, ms);
+//     }
+// };
+
+// CORREZIONE
+// Non era necessario dichiarare un Interval all'interno di una funzione.
 function stampaOgniSecondo(ms) {
-    return function (messaggio) {
-        return setInterval(() => {
-            console.log(messaggio);
-        }, ms);
-    }
+    setInterval(() => {
+        console.log(messaggio);
+    }, ms);
 };
 
 const stampaMessaggio = stampaOgniSecondo(1000);
@@ -100,18 +112,34 @@ const stampaMessaggio = stampaOgniSecondo(1000);
 # SNACK 6
 ***********************************************************************/
 
-function creaContatoreAutomatico(ms) {
-    return function (counter) {
-        return setInterval(() => {
+// MIA VERSIONE
+// function creaContatoreAutomatico(ms) {
+//     return function (counter) {
+//         return setInterval(() => {
+//             counter++;
+//             console.log(counter);
+//         }, ms)
+//     }
+// }
+
+// CORREZIONE
+// Rivedere il concetto di "Closure" dell funzioni HOF.
+// Counter è una variabile che viene "ricordata" dalla funzione nel Return.
+function creaContatoreAutomatico(messaggio, ms) {
+    let counter = 0;
+    return () => {
+        setInterval(() => {
             counter++;
-            console.log(counter);
+            console.log(messaggio + ': ' + counter);
         }, ms)
     }
-}
+};
 
-const contatoreAutomatico = creaContatoreAutomatico(1000);
+// Ogni nuovo Contatore creato crea il suo SCOPE indipendente con il suo COUNTER indipendente.
+const contatoreAutomatico = creaContatoreAutomatico('messaggio', 1000);
 
-let contatoreIncrementale = 0;
+// Questo non serve più, + dentro la funzione principale.
+// let contatoreIncrementale = 0;
 
 // INVOCA
 // const intervalContatoreAutomatico = contatoreAutomatico(contatoreIncrementale);
@@ -126,20 +154,34 @@ let contatoreIncrementale = 0;
 # SNACK 7
 ***********************************************************************/
 
-function eseguiFerma(messaggio, ms, stop) {
-    return function () {
-        const interval = setInterval(() => {
-            console.log(messaggio)
-        }, ms);
+// MIA VERSIONE
+// function eseguiEferma(messaggio, ms, stop) {
+//     return function () {
+//         const interval = setInterval(() => {
+//             console.log(messaggio)
+//         }, ms);
 
-        setTimeout(() => {
-            clearInterval(interval);
-            console.log("eseguiFerma");
-        }, stop);
-    };
+//         setTimeout(() => {
+//             clearInterval(interval);
+//             console.log("eseguiFerma");
+//         }, stop);
+//     };
+// }
+
+// CORREZIONE
+// Non serviva fare il Return di una funzione dentro eseguiEferma.
+function eseguiEferma(messaggio, ms, stop) {
+    const interval = setInterval(() => {
+        console.log(messaggio)
+    }, ms);
+
+    setTimeout(() => {
+        clearInterval(interval);
+        console.log("eseguiFerma");
+    }, stop);
 }
 
-const usaFerma = eseguiFerma('Messaggio da fermare', 1000, 5000);
+const usaFerma = eseguiEferma('Messaggio da fermare', 1000, 5000);
 
 // INVOCA
 // usaFerma();
@@ -150,14 +192,32 @@ const usaFerma = eseguiFerma('Messaggio da fermare', 1000, 5000);
 # SNACK 8 (BONUS)
 ***********************************************************************/
 
+// MIA VERSIONE
+// function contoAllaRovescia(num) {
+//     let timer = setInterval(() => {
+//         console.log(num);
+//         if (num === 0) {
+//             console.log("Tempo scaduto!");
+//             clearInterval(timer);
+//         }
+//         num--;
+//     }, 1000);
+// }
+
+// CORREZIONE
+// Bisogna usare il concetto di CLOSURE delle HOF anche qui. Quindi variabili con Scope indipendente.
+// In questo caso, funzionano entrambe le versioni.
 function contoAllaRovescia(num) {
-    let timer = setInterval(() => {
+    let counter = num;
+    const timer = setInterval(() => {
         console.log(num);
-        if (num === 0) {
-            console.log("Tempo scaduto!");
+        if (counter > 0) {
+            console.log(counter);
+            counter--;
+        } else {
+            console.log('Tempo scaduto!');
             clearInterval(timer);
         }
-        num--;
     }, 1000);
 }
 
@@ -176,26 +236,37 @@ const op3 = () => console.log('Operazione 3');
 
 const operazioni = [op1, op2, op3];
 
-// VERSIONE CON CICLO FOR
-function sequenzaOperazioniV1(array, ms) {
-    for (let i = 0; i < array.length; i++) {
-        setTimeout(() => {
-            array[i]();
-        }, ms * i);
-    }
-}
+// MIA VERSIONE (in questo caso 2 versioni)
 
-// VERSIONE CON IF
-function sequenzaOperazioniV2(array, ms) {
-    let i = 0;
-    function eseguiOperazione() {
-        if (i < array.length) {
-            array[i]();
-            i++;
-            setTimeout(eseguiOperazione, ms);
-        }
-    }
-    eseguiOperazione();
+// VERSIONE CON CICLO FOR
+// function sequenzaOperazioniV1(array, ms) {
+//     for (let i = 0; i < array.length; i++) {
+//         setTimeout(() => {
+//             array[i]();
+//         }, ms * i);
+//     }
+// }
+
+// // VERSIONE CON IF
+// function sequenzaOperazioniV2(array, ms) {
+//     let i = 0;
+//     function eseguiOperazione() {
+//         if (i < array.length) {
+//             array[i]();
+//             i++;
+//             setTimeout(eseguiOperazione, ms);
+//         }
+//     }
+//     eseguiOperazione();
+// }
+
+// CORREZIONE
+function sequenzaOperazioni(array, ms) {
+    array.array.forEach((operazione, index) => {
+        setTimeout(() => {
+            operazione();
+        }, ms * index)
+    });
 }
 
 // INVOCA
@@ -211,6 +282,8 @@ function sequenzaOperazioniV2(array, ms) {
 function stampaMessaggioThrottler(messaggio) {
     console.log(messaggio);
 }
+
+// MIA VERSIONE
 
 function creaThrottler(funzione, limite) {
     let ultimaChiamata = 0;
@@ -230,6 +303,27 @@ function creaThrottler(funzione, limite) {
     };
 }
 
+// NOTA:
+/* La funzione che viene passata al THROTTLER non sappiamo quanti PARAMS potrebbe avere, se 1 o 20 o 100.
+Ecco perchè alla funzione dentro il RETURN impostiamo uno SPREAD OPERATOR (REST PARAMS) così che a prescindere dal numero
+di argomenti necessari, la funzione li accetti tutti. */
+
+// CORREZIONE
+/* La mia versione andava bene. Semplicemente in questa non vengon o contate le chiamate eseguite e non c'è il
+console.log delle chiamate ignorate. Posso infatti decidere di non usare ELSE. */
+// function creaThrottler(funzione, limite) {
+//     let ultimaChiamata = 0;
+
+//     return function (...args) {
+//         const ora = Date.now();
+
+//         if (ora - ultimaChiamata >= limite) {
+//             ultimaChiamata = ora;
+//             funzione(...args);
+//         }
+//     }
+// }
+
 const throttledStampa = creaThrottler(stampaMessaggioThrottler, 2000);
 
 // INVOCA
@@ -237,3 +331,4 @@ throttledStampa('Call 1');
 throttledStampa('Call 2');
 setTimeout(() => throttledStampa('Call 3'), 2500);
 setTimeout(() => throttledStampa('Call 4'), 3500);
+
